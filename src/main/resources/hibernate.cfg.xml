@@ -5,7 +5,7 @@
         </property>
 
         <property name="hibernate.connection.url">
-            jdbc:postgresql://localhost:5432/users
+            jdbc:postgresql://localhost:5432/postgres
         </property>
 
         <property name="hibernate.connection.username">
@@ -23,9 +23,9 @@
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
 
-        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.hbm2ddl.auto">create-drop</property>
 
-        <mapping class="com.example.entity.User"/>
+        <mapping class="User"/>
 
     </session-factory>
 </hibernate-configuration>
