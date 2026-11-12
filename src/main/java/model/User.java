@@ -1,3 +1,5 @@
+package model;
+
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -11,13 +13,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column
+    @Column(name = "age", nullable = false)
     private int age;
 
     @CreationTimestamp
