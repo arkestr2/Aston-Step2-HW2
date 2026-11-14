@@ -1,6 +1,6 @@
-package dao;
+package com.example.usercrud.dao;
 
-import model.User;
+import com.example.usercrud.model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;

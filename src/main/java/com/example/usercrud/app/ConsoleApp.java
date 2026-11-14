@@ -1,8 +1,8 @@
-package app;
+package com.example.usercrud.app;
 
-import dao.Dao;
-import dao.UserDao;
-import model.User;
+import com.example.usercrud.dao.Dao;
+import com.example.usercrud.dao.UserDao;
+import com.example.usercrud.model.User;
 
 import java.util.List;
 import java.util.Optional;

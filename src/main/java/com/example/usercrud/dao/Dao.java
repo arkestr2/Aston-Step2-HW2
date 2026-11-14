@@ -1,6 +1,4 @@
-package dao;
-
-import model.User;
+package com.example.usercrud.dao;
 
 import java.util.List;
 import java.util.Optional;

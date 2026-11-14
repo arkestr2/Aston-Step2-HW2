@@ -1,6 +1,6 @@
-import app.ConsoleApp;
-import config.HibernateUtil;
-import dao.UserDao;
+import com.example.usercrud.app.ConsoleApp;
+import com.example.usercrud.config.HibernateUtil;
+import com.example.usercrud.dao.UserDao;
 
 void main() {
     ConsoleApp app = new ConsoleApp(
