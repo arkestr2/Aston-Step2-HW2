@@ -28,7 +28,7 @@ public class ConsoleApp {
                     1. [CREATE] Создать сущность User
                     2. [READ] Получить весь список сохраненных пользователей
                     3. [READ] Получить сущность User по Id
-                    4. [UPDATE] Заменить сущность User
+                    4. [UPDATE] Обновить сущность User
                     5. [DELETE] Удалить сущность User
                     
                     0. Выйти
@@ -62,7 +62,7 @@ public class ConsoleApp {
                         System.out.printf("Пользователь с Id=%s не найден", idToFind);
                     break;
                 case "4":
-                    System.out.println("Какого пользователя вы хотите заменить?");
+                    System.out.println("Какого пользователя вы хотите обновить?");
                     Long idToUpdate = getInputUserId();
                     Optional<User> userToUpdate = userDao.findById(idToUpdate);
 
