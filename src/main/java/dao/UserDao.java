@@ -15,13 +15,14 @@ import java.util.Optional;
 //          сейчас они открываются и закрываются внутри дао-методов,
 //          что не позволяет использовать несколько из них в рамках одной транзакции
 
-public class UserDao {
+public class UserDao implements Dao<User> {
     private final SessionFactory sessionFactory;
 
     public UserDao(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
+    @Override
     public void save(User user) {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
@@ -39,12 +40,14 @@ public class UserDao {
         }
     }
 
+    @Override
     public Optional<User> findById(Long id) {
         try (Session session = sessionFactory.openSession()) {
             return Optional.ofNullable(session.find(User.class, id));
         }
     }
 
+    @Override
     public List<User> findAll() {
         try (Session session = sessionFactory.openSession()) {
             SelectionQuery<User> query = session.createSelectionQuery(
@@ -55,6 +58,7 @@ public class UserDao {
         }
     }
 
+    @Override
     public User update(User user) {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
@@ -73,6 +77,7 @@ public class UserDao {
         }
     }
 
+    @Override
     public void delete(User user) {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
