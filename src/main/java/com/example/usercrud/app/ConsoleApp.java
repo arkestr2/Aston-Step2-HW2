@@ -1,7 +1,6 @@
 package com.example.usercrud.app;
 
 import com.example.usercrud.dao.Dao;
-import com.example.usercrud.dao.UserDao;
 import com.example.usercrud.model.User;
 
 import java.util.List;
@@ -12,7 +11,7 @@ public class ConsoleApp {
     private final Scanner scanner;
     private final Dao<User> userDao;
 
-    public ConsoleApp(Scanner scanner, UserDao userDao) {
+    public ConsoleApp(Scanner scanner, Dao<User> userDao) {
         this.scanner = scanner;
         this.userDao = userDao;
     }
