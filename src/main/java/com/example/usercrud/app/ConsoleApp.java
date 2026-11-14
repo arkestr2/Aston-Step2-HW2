@@ -2,6 +2,8 @@ package com.example.usercrud.app;
 
 import com.example.usercrud.dao.Dao;
 import com.example.usercrud.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +12,7 @@ import java.util.Scanner;
 public class ConsoleApp {
     private final Scanner scanner;
     private final Dao<User> userDao;
+    private static final Logger log = LoggerFactory.getLogger(ConsoleApp.class);
 
     public ConsoleApp(Scanner scanner, Dao<User> userDao) {
         this.scanner = scanner;
@@ -58,8 +61,10 @@ public class ConsoleApp {
                     Optional<User> userById = userDao.findById(idToFind);
                     if (userById.isPresent())
                         System.out.printf("Пользователь успешно найден: %s%n", userById.get());
-                    else
-                        System.out.printf("Пользователь с Id=%s не найден", idToFind);
+                    else {
+                        log.warn("User not found: {}", idToFind);
+                        System.out.printf("Пользователь с Id=%s не найден%n", idToFind);
+                    }
                     break;
                 case "4":
                     System.out.println("Какого пользователя вы хотите обновить?");
@@ -83,8 +88,10 @@ public class ConsoleApp {
                         User updatedUser = userDao.update(userToUpdate.get());
                         System.out.printf("Пользователь успешно обновлен: %s%n", updatedUser);
                     }
-                    else
-                        System.out.printf("Пользователь с Id=%s не найден", idToUpdate);
+                    else {
+                        log.warn("User not found: {}", idToUpdate);
+                        System.out.printf("Пользователь с Id=%s не найден%n", idToUpdate);
+                    }
                     break;
                 case "5":
                     System.out.println("Какого пользователя вы хотите удалить?");
@@ -94,8 +101,10 @@ public class ConsoleApp {
                         userDao.delete(userToDelete.get());
                         System.out.printf("Пользователь успешно удален: %s%n", userToDelete.get());
                     }
-                    else
-                        System.out.printf("Пользователь с Id=%s не найден", idToDelete);
+                    else {
+                        log.warn("User not found: {}", idToDelete);
+                        System.out.printf("Пользователь с Id=%s не найден%n", idToDelete);
+                    }
                     break;
             }
         } while (!input.equals("0"));

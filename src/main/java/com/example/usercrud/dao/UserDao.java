@@ -5,6 +5,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.SelectionQuery;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +18,9 @@ import java.util.Optional;
 //          что не позволяет использовать несколько из них в рамках одной транзакции
 
 public class UserDao implements Dao<User> {
+
+    private static final Logger log = LoggerFactory.getLogger(UserDao.class);
+
     private final SessionFactory sessionFactory;
 
     public UserDao(SessionFactory sessionFactory) {
@@ -31,6 +36,7 @@ public class UserDao implements Dao<User> {
                 session.persist(user);
                 transaction.commit();
             } catch (Exception e) {
+                log.error("Error while saving user", e);
                 if (transaction.isActive()) {
                     transaction.rollback();
                 }
@@ -68,6 +74,7 @@ public class UserDao implements Dao<User> {
                 transaction.commit();
                 return updatedUser;
             } catch (Exception e) {
+                log.error("Error while updating user", e);
                 if (transaction.isActive()) {
                     transaction.rollback();
                 }
@@ -86,6 +93,7 @@ public class UserDao implements Dao<User> {
                 session.remove(user);
                 transaction.commit();
             } catch (Exception e) {
+                log.error("Error while deleting user", e);
                 if (transaction.isActive()) {
                     transaction.rollback();
                 }
