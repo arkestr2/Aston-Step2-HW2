@@ -11,11 +11,6 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Optional;
 
-//todo:
-//  усовершенствовать обработку исключений
-//  подумать над транзакциями:
-//          сейчас они открываются и закрываются внутри дао-методов,
-//          что не позволяет использовать несколько из них в рамках одной транзакции
 
 public class UserDao implements Dao<User> {
 
