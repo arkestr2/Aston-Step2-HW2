@@ -39,73 +39,78 @@ public class ConsoleApp {
 
             input = scanner.nextLine().trim();
 
-            switch (input) {
-                case "1":
-                    User userToSave = getInputUser();
-                    userDao.save(userToSave);
-                    System.out.printf("Пользователь успешно сохранен: %s%n", userToSave);
-                    break;
-                case "2":
-                    List<User> users = userDao.findAll();
-                    if (users.isEmpty())
-                        System.out.println("Список пользователей пуст");
-                    else {
-                        for (int i = 0; i < users.size(); i++) {
-                            System.out.printf("%2d. %s%n", i + 1, users.get(i));
+            try {
+                switch (input) {
+                    case "1":
+                        User userToSave = getInputUser();
+                        userDao.save(userToSave);
+                        System.out.printf("Пользователь успешно сохранен: %s%n", userToSave);
+                        break;
+                    case "2":
+                        List<User> users = userDao.findAll();
+                        if (users.isEmpty())
+                            System.out.println("Список пользователей пуст");
+                        else {
+                            for (int i = 0; i < users.size(); i++) {
+                                System.out.printf("%2d. %s%n", i + 1, users.get(i));
+                            }
                         }
-                    }
-                    break;
-                case "3":
-                    System.out.println("Какого пользователя вы хотите найти?");
-                    Long idToFind = getInputUserId();
-                    Optional<User> userById = userDao.findById(idToFind);
-                    if (userById.isPresent())
-                        System.out.printf("Пользователь успешно найден: %s%n", userById.get());
-                    else {
-                        log.warn("User not found: {}", idToFind);
-                        System.out.printf("Пользователь с Id=%s не найден%n", idToFind);
-                    }
-                    break;
-                case "4":
-                    System.out.println("Какого пользователя вы хотите обновить?");
-                    Long idToUpdate = getInputUserId();
-                    Optional<User> userToUpdate = userDao.findById(idToUpdate);
+                        break;
+                    case "3":
+                        System.out.println("Какого пользователя вы хотите найти?");
+                        Long idToFind = getInputUserId();
+                        Optional<User> userById = userDao.findById(idToFind);
+                        if (userById.isPresent())
+                            System.out.printf("Пользователь успешно найден: %s%n", userById.get());
+                        else {
+                            log.warn("User not found: {}", idToFind);
+                            System.out.printf("Пользователь с Id=%s не найден%n", idToFind);
+                        }
+                        break;
+                    case "4":
+                        System.out.println("Какого пользователя вы хотите обновить?");
+                        Long idToUpdate = getInputUserId();
+                        Optional<User> userToUpdate = userDao.findById(idToUpdate);
 
-                    if (userToUpdate.isPresent()) {
-                        User userUpdates = getInputUserUpdates();
+                        if (userToUpdate.isPresent()) {
+                            User userUpdates = getInputUserUpdates();
 
-                        String name = userUpdates.getName();
-                        String email = userUpdates.getEmail();
-                        int age = userUpdates.getAge();
+                            String name = userUpdates.getName();
+                            String email = userUpdates.getEmail();
+                            int age = userUpdates.getAge();
 
-                        if (name != null)
-                            userToUpdate.get().setName(name);
-                        if (email != null)
-                            userToUpdate.get().setEmail(email);
-                        if (age != 0)
-                            userToUpdate.get().setAge(age);
+                            if (name != null)
+                                userToUpdate.get().setName(name);
+                            if (email != null)
+                                userToUpdate.get().setEmail(email);
+                            if (age != 0)
+                                userToUpdate.get().setAge(age);
 
-                        User updatedUser = userDao.update(userToUpdate.get());
-                        System.out.printf("Пользователь успешно обновлен: %s%n", updatedUser);
-                    }
-                    else {
-                        log.warn("User not found: {}", idToUpdate);
-                        System.out.printf("Пользователь с Id=%s не найден%n", idToUpdate);
-                    }
-                    break;
-                case "5":
-                    System.out.println("Какого пользователя вы хотите удалить?");
-                    Long idToDelete = getInputUserId();
-                    Optional<User> userToDelete = userDao.findById(idToDelete);
-                    if (userToDelete.isPresent()) {
-                        userDao.delete(userToDelete.get());
-                        System.out.printf("Пользователь успешно удален: %s%n", userToDelete.get());
-                    }
-                    else {
-                        log.warn("User not found: {}", idToDelete);
-                        System.out.printf("Пользователь с Id=%s не найден%n", idToDelete);
-                    }
-                    break;
+                            User updatedUser = userDao.update(userToUpdate.get());
+                            System.out.printf("Пользователь успешно обновлен: %s%n", updatedUser);
+                        }
+                        else {
+                            log.warn("User not found: {}", idToUpdate);
+                            System.out.printf("Пользователь с Id=%s не найден%n", idToUpdate);
+                        }
+                        break;
+                    case "5":
+                        System.out.println("Какого пользователя вы хотите удалить?");
+                        Long idToDelete = getInputUserId();
+                        Optional<User> userToDelete = userDao.findById(idToDelete);
+                        if (userToDelete.isPresent()) {
+                            userDao.delete(userToDelete.get());
+                            System.out.printf("Пользователь успешно удален: %s%n", userToDelete.get());
+                        }
+                        else {
+                            log.warn("User not found: {}", idToDelete);
+                            System.out.printf("Пользователь с Id=%s не найден%n", idToDelete);
+                        }
+                        break;
+                }
+            } catch (Exception e) {
+                log.error("Операция не выполнена", e);
+                System.out.println("Ошибка работы с БД. Попробуйте снова. Если проблема появляется снова, попробуйте позже");
             }
         } while (!input.equals("0"));
     }
