@@ -160,7 +160,7 @@ public class ConsoleApp {
 
     private User getInputUserUpdates() {
         System.out.print("""
-                Приеры:
+                Примеры:
                     Обновление возраста: ";;20"
                     Обновление имени и почты: "newName;newmail@mail.com;"
                 """);
