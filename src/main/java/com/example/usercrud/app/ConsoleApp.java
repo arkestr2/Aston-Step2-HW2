@@ -115,7 +115,7 @@ public class ConsoleApp {
             System.out.print("Введите сущность User в формате name;email;age: ");
 
             String input = scanner.nextLine().trim();
-            String[] fields = input.split(";");
+            String[] fields = input.split(";", -1);
 
             if (fields.length != 3) {
                 System.out.println("Некорректный формат. Попробуйте снова");
