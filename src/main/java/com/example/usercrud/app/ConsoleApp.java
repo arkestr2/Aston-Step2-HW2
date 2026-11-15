@@ -176,13 +176,17 @@ public class ConsoleApp {
                 continue;
             }
 
+            String name = fields[0].trim();
+            String email = fields[1].trim();
+            String age = fields[2].trim();
+
+            if (name.isEmpty() && email.isEmpty() && age.isEmpty()) {
+                System.out.println("Ни одно поле не указано. Попробуйте снова");
+                continue;
+            }
+
             User userUpdates = new User();
-
             try {
-                String name = fields[0].trim();
-                String email = fields[1].trim();
-                String age = fields[2].trim();
-
                 if (!name.isEmpty())
                     userUpdates.setName(name);
                 if (!email.isEmpty())
