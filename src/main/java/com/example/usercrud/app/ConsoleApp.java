@@ -130,6 +130,7 @@ public class ConsoleApp {
                 user.setAge(Integer.parseInt(fields[2].trim()));
             }  catch (NumberFormatException e) {
                 System.out.println("Возраст должен быть числом. Попробуйте снова");
+                continue;
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage() + ". Попробуйте снова");
                 continue;
