@@ -1,22 +1,21 @@
 package com.example.usercrud.app;
 
-import com.example.usercrud.dao.Dao;
 import com.example.usercrud.model.User;
+import com.example.usercrud.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
 
 public class ConsoleApp {
     private final Scanner scanner;
-    private final Dao<User> userDao;
+    private final UserService userService;
     private static final Logger log = LoggerFactory.getLogger(ConsoleApp.class);
 
-    public ConsoleApp(Scanner scanner, Dao<User> userDao) {
+    public ConsoleApp(Scanner scanner, UserService userService) {
         this.scanner = scanner;
-        this.userDao = userDao;
+        this.userService = userService;
     }
 
     public void run() {
@@ -43,14 +42,14 @@ public class ConsoleApp {
                 switch (input) {
                     case "1":
                         User userToSave = getInputUser();
-                        userDao.save(userToSave);
+                        userService.save(userToSave);
                         System.out.printf("Пользователь успешно сохранен: %s%n", userToSave);
                         break;
                     case "2":
-                        List<User> users = userDao.findAll();
-                        if (users.isEmpty())
+                        List<User> users = userService.findAll();
+                        if (users.isEmpty()) {
                             System.out.println("Список пользователей пуст");
-                        else {
+                        } else {
                             for (int i = 0; i < users.size(); i++) {
                                 System.out.printf("%2d. %s%n", i + 1, users.get(i));
                             }
@@ -59,53 +58,29 @@ public class ConsoleApp {
                     case "3":
                         System.out.println("Какого пользователя вы хотите найти?");
                         Long idToFind = getInputUserId();
-                        Optional<User> userById = userDao.findById(idToFind);
-                        if (userById.isPresent())
-                            System.out.printf("Пользователь успешно найден: %s%n", userById.get());
-                        else {
-                            log.warn("User not found: {}", idToFind);
-                            System.out.printf("Пользователь с Id=%s не найден%n", idToFind);
-                        }
+                        userService.findById(idToFind).ifPresentOrElse(
+                                user -> System.out.printf("Пользователь успешно найден: %s%n", user),
+                                () -> System.out.printf("Пользователь с Id=%s не найден%n", idToFind)
+                        );
                         break;
                     case "4":
                         System.out.println("Какого пользователя вы хотите обновить?");
                         Long idToUpdate = getInputUserId();
-                        Optional<User> userToUpdate = userDao.findById(idToUpdate);
-
-                        if (userToUpdate.isPresent()) {
-                            User userUpdates = getInputUserUpdates();
-
-                            String name = userUpdates.getName();
-                            String email = userUpdates.getEmail();
-                            int age = userUpdates.getAge();
-
-                            if (name != null)
-                                userToUpdate.get().setName(name);
-                            if (email != null)
-                                userToUpdate.get().setEmail(email);
-                            if (age != 0)
-                                userToUpdate.get().setAge(age);
-
-                            User updatedUser = userDao.update(userToUpdate.get());
-                            System.out.printf("Пользователь успешно обновлен: %s%n", updatedUser);
-                        }
-                        else {
-                            log.warn("User not found: {}", idToUpdate);
+                        if (userService.findById(idToUpdate).isEmpty()) {
                             System.out.printf("Пользователь с Id=%s не найден%n", idToUpdate);
+                            break;
                         }
+                        User userUpdates = getInputUserUpdates();
+                        userService.update(idToUpdate, userUpdates).ifPresent(user ->
+                                System.out.printf("Пользователь успешно обновлен: %s%n", user));
                         break;
                     case "5":
                         System.out.println("Какого пользователя вы хотите удалить?");
                         Long idToDelete = getInputUserId();
-                        Optional<User> userToDelete = userDao.findById(idToDelete);
-                        if (userToDelete.isPresent()) {
-                            userDao.delete(userToDelete.get());
-                            System.out.printf("Пользователь успешно удален: %s%n", userToDelete.get());
-                        }
-                        else {
-                            log.warn("User not found: {}", idToDelete);
-                            System.out.printf("Пользователь с Id=%s не найден%n", idToDelete);
-                        }
+                        userService.delete(idToDelete).ifPresentOrElse(
+                                user -> System.out.printf("Пользователь успешно удален: %s%n", user),
+                                () -> System.out.printf("Пользователь с Id=%s не найден%n", idToDelete)
+                        );
                         break;
                 }
             } catch (Exception e) {
